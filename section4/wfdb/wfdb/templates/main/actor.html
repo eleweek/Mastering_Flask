@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{{ actor.first_name }} {{ actor.last_name }}'s Page{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-4 col-md-offset-2">
+            <h1>{{ actor.first_name }} {{ actor.last_name }}</h1>
+            <p><strong>Birth Date</strong> {{ actor.birthday }}</p>
+            {% if actor.deathday is not none %} <p><strong>Death Date</strong>  {{ actor.deathday }} </p> {% endif %}
+            <p><strong>Hometown</strong> {{ actor.hometown }}</p>
+        </div>
+        <div class="col-md-4">
+            <img src="http://placehold.it/250x300">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Bio</h2>
+            <p>{{ actor.bio }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Roles</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Role</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for role in actor.roles %}
+                        <tr>
+                            <td><a href="{{ url_for('main.movie', movie_id=role.movie.id) }}">{{ role.movie.name }}</a></td>
+                            <td>{{ role.role_name }}</td>
+                            <td>{{ role.movie.release_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Directorships</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in actor.directorships %}
+                        <tr>
+                            <td><a href="{{ url_for('main.movie', movie_id=movie.id) }}">{{ movie.name }}</a></td>
+                            <td>{{ movie.release_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
