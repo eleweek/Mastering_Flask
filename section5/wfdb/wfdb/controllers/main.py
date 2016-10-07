@@ -62,6 +62,8 @@ def register():
         user.username = form.username.data
         user.set_password(form.password.data)
         user.active = True
+        default_role = Role.query.filter_by(name="default").first()
+        user.roles.append(default_role)
 
         db.session.add(user)
         db.session.commit()
