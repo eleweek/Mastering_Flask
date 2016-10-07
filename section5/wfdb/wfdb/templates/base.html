@@ -1,0 +1,57 @@
+{% macro format_date(dt) %}
+  {{ dt.strftime('%Y-%m-%d') }}
+{% endmacro %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"></script>
+        {% block css %}
+        {% endblock %}
+    </head>
+
+    <body>
+        <nav class="navbar navbar-full navbar-dark bg-inverse">
+          <a class="navbar-brand" href="#">WFDB</a>
+          <ul class="nav navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('main.home') }}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('blog.blog') }}">Blog</a></li>
+          </ul>
+          <ul class="nav navbar-nav pull-xs-right">
+              {% if current_user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a></li>
+              {% else %}
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main.login') }}">Login</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('main.register') }}">Register</a></li>
+              {% endif %}
+          </ul>
+        </nav>
+        <br>
+
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block body %}
+            {% endblock %}
+        </div>
+        
+        <script src="{{ url_for('static', filename='js/jquery-2.2.3.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        {% block js %}
+        {% endblock %}
+    </body>
+</html>
