@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}WFDB Blog{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <h1 class="text-xs-center">World Film Database Blog</h1>
+    </div>
+    {% for post in posts %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>{{ post.title }}</h2>
+            <p>{{ format_date(post.publish_date) }}</p>
+            {{ post.text | truncate(300) }}
+            <p><a href="{{ url_for('blog.post', post_id=post.id) }}">Read More</a></p>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
