@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <h1 class="text-xs-center">Blog Post Title</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <p><strong>Publish Date:</strong> {{ format_date(post.publish_date) }}</p>
+            <p><strong>Tags:</strong> {% for tag in post.tags %}{{ tag.title }} {% endfor %}</p>
+            <p>{{ post.text | safe }}</p>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <h2 class="text-xs-center">Comments</h2>
+        <div class="col-md-8 col-md-offset-2">
+            {% if current_user.is_authenticated %}
+            <form action="{{ url_for('blog.post', post_id=post.id) }}" method="post" class="form">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group">
+                    {{ form.text.label }}
+
+                    {% if form.text.errors %}
+                        {% for e in form.text.errors %}
+                            <p class="help-block">{{ e }}</p>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form.text(class_="form-control") }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            {% else %}
+            <a href={{url_for('main.login')}}>Login to leave a comment</a>
+            {% endif %}
+        </div>
+    </div>
+    {% for comment in post.comments %}
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 card">
+                <p><strong>Name: </strong>{{ comment.user.username }}</p>
+                <p><strong>Date: </strong>{{ comment.date.strftime('%Y-%m-%d %H:%m:%S') }}</p>
+                <p><strong>Text: </strong>{{ comment.text }}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
