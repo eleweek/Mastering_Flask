@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-xs-center">Latest Movies</h1>
+        </div>
+    </div>
+	{% for movie in latest_movies %}
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" src="http://placehold.it/150x150">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{loop.index}}. {{ movie.name }}</h4>
+                        <p>{{ movie.summary | truncate(700) }}</p>
+                        <p><a href="{{ url_for('main.movie', movie_id=movie.id) }}">Read More</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+	{% endfor %}
+{% endblock %}

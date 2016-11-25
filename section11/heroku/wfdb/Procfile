@@ -1,0 +1,2 @@
+web: gunicorn -w 1 application:app
+worker: celery -B -A celery_runner:celery  worker --loglevel info

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.name }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-4 col-md-offset-2">
+            <h1>{{ movie.name }}</h1>
+            <p><strong>Release Date</strong> {{ movie.release_date }}</p>
+            <p><strong>Director</strong>
+              <a href="{{ url_for('main.actor', actor_id=movie.director.id) }}">
+                {{ movie.director.first_name }} {{ movie.director.last_name }}
+              </a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <img src="http://placehold.it/250x300">
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Plot Summary</h2>
+            <p>{{ movie.summary }}</p>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Cast</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for role in movie.cast %}
+                    <tr>
+                        <td><a href="{{ url_for('main.actor', actor_id=role.actor.id) }}">{{ role.actor.first_name }} {{ role.actor.last_name }}</a></td>
+                        <td>{{ role.role_name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}

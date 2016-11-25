@@ -1,0 +1,13 @@
+[Unit]
+Description=Celery instance for wfdb
+After=network.target redis.service
+
+[Service]
+User=wfdbuser
+Group=wfdbuser
+WorkingDirectory=/home/wfdbuser/wfdb
+Environment="PATH=/home/wfdbuser/wfdb/wfdb-env/bin"
+ExecStart=/home/wfdbuser/wfdb/wfdb-env/bin/celery -B -A celery_runner worker --loglevel info
+
+[Install]
+WantedBy=multi-user.target

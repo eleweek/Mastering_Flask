@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve wfdb
+After=network.target redis.service
+
+[Service]
+User=wfdbuser
+Group=wfdbuser
+WorkingDirectory=/home/wfdbuser/wfdb
+Environment="PATH=/home/wfdbuser/wfdb/wfdb-env/bin"
+ExecStart=/home/wfdbuser/wfdb/wfdb-env/bin/gunicorn -b 127.0.0.1:8000 application:app
+
+[Install]
+WantedBy=multi-user.target
